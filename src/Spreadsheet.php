@@ -12,6 +12,7 @@ use alcamo\rdfa\{HasRdfaDataTrait, RdfaData};
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet as PhpOfficeSpreadsheet;
 
+/// Spreadsheet with RDFa data
 class Spreadsheet extends PhpOfficeSpreadsheet
 {
     use HasRdfaDataTrait;
