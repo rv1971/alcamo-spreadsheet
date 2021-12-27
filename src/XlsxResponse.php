@@ -2,7 +2,7 @@
 
 namespace alcamo\spreadsheet;
 
-use alcamo\http\Response;
+use alcamo\http\{ResourceStream, Response};
 use alcamo\rdfa\RdfaData;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -37,6 +37,6 @@ class XlsxResponse extends Response
             )
         );
 
-        parent::__construct($rdfaData, $resource);
+        parent::__construct($rdfaData, new ResourceStream($resource));
     }
 }
