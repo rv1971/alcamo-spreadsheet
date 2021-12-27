@@ -14,12 +14,19 @@ class XlsxResponse extends Response
 
     public function __construct(Spreadsheet $spreadsheet)
     {
+        $resource = fopen('php://memory', 'wb+');
+
+        (new Xlsx($spreadsheet))->save($resource);
+
+        fseek($resource, 0, SEEK_END);
+
         $rdfaData = $spreadsheet->getRdfaData();
 
         $rdfaData = $rdfaData->add(
             RdfaData::newFromIterable(
                 [
                     'dc:format' => static::MEDIA_TYPE,
+                    'header:content-length' => ftell($resource),
                     'header:content-disposition'
                     => $rdfaData['dc:identifier']
                     . (isset($rdfaData['owl:versionInfo'])
@@ -30,10 +37,6 @@ class XlsxResponse extends Response
             )
         );
 
-        $resource = fopen('php://memory', 'wb+');
-
         parent::__construct($rdfaData, $resource);
-
-        (new Xlsx($spreadsheet))->save($resource);
     }
 }
