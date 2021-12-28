@@ -17,6 +17,8 @@ class Spreadsheet extends PhpOfficeSpreadsheet
 {
     use HasRdfaDataTrait;
 
+    public const WORKSHEET_CLASS = Worksheet::class;
+
     /// Map of RDFa properties to methods of the Properties class
     public const PROP_2_METHODS = [
         'dc:created'   => 'setCreated',
@@ -82,7 +84,9 @@ class Spreadsheet extends PhpOfficeSpreadsheet
 
     public function createSheet($sheetIndex = null)
     {
-        $newSheet = new Worksheet($this);
+        $class = static::WORKSHEET_CLASS;
+
+        $newSheet = new $class($this);
         $this->addSheet($newSheet, $sheetIndex);
 
         return $newSheet;
