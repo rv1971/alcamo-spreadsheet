@@ -18,17 +18,19 @@ class Spreadsheet extends PhpOfficeSpreadsheet
     use HasRdfaDataTrait;
 
     /// Map of RDFa properties to methods of the Properties class
-    public const PROP_2_METHOD = [
-        'dc:created' => 'setCreated',
-        'dc:creator' => [ 'setCreator', 'setLastModifiedBy' ],
-        'dc:modified' => 'setModified',
+    public const PROP_2_METHODS = [
+        'dc:created'   => 'setCreated',
+        'dc:creator'   => [ 'setCreator', 'setLastModifiedBy' ],
+        'dc:modified'  => 'setModified',
         'dc:publisher' => 'setCompany',
-        'dc:title' => 'setTitle'
+        'dc:title'     => 'setTitle'
     ];
 
     /// Map of RDFa properties to spreadsheet custom properties.
     public const PROP_2_CUSTOM_PROP = [
-        'dc:audience' => 'Audience',
+        'dc:audience'     => 'Audience',
+        'dc:identifier'   => 'Identifier',
+        'dc:language'     => 'Language',
         'owl:versionInfo' => 'Version'
     ];
 
@@ -48,7 +50,7 @@ class Spreadsheet extends PhpOfficeSpreadsheet
 
         $this->rdfaData_ = $rdfaData;
 
-        foreach (static::PROP_2_METHOD as $prop => $methods) {
+        foreach (static::PROP_2_METHODS as $prop => $methods) {
             if (isset($this->rdfaData_[$prop])) {
                 foreach ((array)$methods as $method) {
                     $this->getProperties()->$method(
@@ -67,7 +69,7 @@ class Spreadsheet extends PhpOfficeSpreadsheet
 
                 $this->getProperties()->setCustomProperty(
                     $customProp,
-                    $this->rdfaData_[$prop]->getObject(),
+                    (string)$this->rdfaData_[$prop]->getObject(),
                     $dataType
                 );
             }

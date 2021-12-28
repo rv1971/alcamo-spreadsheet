@@ -24,6 +24,8 @@ class SpreadsheetTest extends TestCase
                 'dc:publisher'    => 'Example.org ltd.',
                 'dc:title'        => 'Foo vs. Bar',
                 'dc:audience'     => 'World',
+                'dc:identifier'   => '123e4567-e89b-12d3-a456-426614174000',
+                'dc:language'     => 'eu',
                 'owl:versionInfo' => '0.42.1'
             ]
         );
@@ -64,6 +66,16 @@ class SpreadsheetTest extends TestCase
         $this->assertSame(
             $rdfaData['dc:audience']->getObject(),
             $spreadsheet->getProperties()->getCustomPropertyValue('Audience')
+        );
+
+        $this->assertSame(
+            $rdfaData['dc:identifier']->getObject(),
+            $spreadsheet->getProperties()->getCustomPropertyValue('Identifier')
+        );
+
+        $this->assertEquals(
+            (string)$rdfaData['dc:language'],
+            $spreadsheet->getProperties()->getCustomPropertyValue('Language')
         );
 
         $this->assertSame(
