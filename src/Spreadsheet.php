@@ -44,11 +44,11 @@ class Spreadsheet extends PhpOfficeSpreadsheet
      * - Remove the initial worksheet.
      * - Set the default style to @ref DEFAULT_STYLE.
      */
-    public function __construct(RdfaData $rdfaData)
+    public function __construct(?RdfaData $rdfaData = null)
     {
         parent::__construct();
 
-        $this->rdfaData_ = $rdfaData;
+        $this->rdfaData_ = $rdfaData ?? new RdfaData();
 
         foreach (static::PROP_2_METHODS as $prop => $methods) {
             if (isset($this->rdfaData_[$prop])) {
