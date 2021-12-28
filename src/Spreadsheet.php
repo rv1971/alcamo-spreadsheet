@@ -48,7 +48,7 @@ class Spreadsheet extends PhpOfficeSpreadsheet
     {
         parent::__construct();
 
-        $this->rdfaData_ = $rdfaData ?? new RdfaData();
+        $this->rdfaData_ = $rdfaData ?? RdfaData::newFromIterable([]);
 
         foreach (static::PROP_2_METHODS as $prop => $methods) {
             if (isset($this->rdfaData_[$prop])) {
@@ -78,5 +78,13 @@ class Spreadsheet extends PhpOfficeSpreadsheet
         $this->removeSheetByIndex(0);
 
         $this->getDefaultStyle()->applyFromArray(static::DEFAULT_STYLE);
+    }
+
+    public function createSheet($sheetIndex = null)
+    {
+        $newSheet = new Worksheet($this);
+        $this->addSheet($newSheet, $sheetIndex);
+
+        return $newSheet;
     }
 }
