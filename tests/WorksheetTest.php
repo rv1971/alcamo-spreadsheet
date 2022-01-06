@@ -104,6 +104,29 @@ class WorksheetTest extends TestCase
         $this->assertSame(24, $sheet0->getRow());
     }
 
+    public function testMoveCol()
+    {
+        $sheet0 = self::$spreadsheet_->getSheet(0);
+
+        $sheet0->setCol('CU')->moveCol(7);
+
+        $this->assertSame('DB', (string)$sheet0->getCol());
+
+        $sheet0->moveCol(-12);
+        $this->assertSame('CP', (string)$sheet0->getCol());
+    }
+
+    public function testMoveRow()
+    {
+        $sheet0 = self::$spreadsheet_->getSheet(0);
+
+        $sheet0->setRow(42)->moveRow(42);
+        $this->assertSame(84, $sheet0->getRow());
+
+        $sheet0->moveRow(-3);
+        $this->assertSame(81, $sheet0->getRow());
+    }
+
     public function testWriteCell()
     {
         $sheet0 = self::$spreadsheet_->getSheet(0);

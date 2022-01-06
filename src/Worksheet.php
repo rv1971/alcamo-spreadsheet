@@ -102,6 +102,18 @@ class Worksheet extends PhpOfficeWorksheet
         return $this;
     }
 
+    public function moveCol(int $distance): self
+    {
+        $this->col_ = $this->col_->add($distance);
+        return $this;
+    }
+
+    public function moveRow(int $distance): self
+    {
+        $this->row_ += $distance;
+        return $this;
+    }
+
     /**
      * @param $cellData Either a non-array value or an array consisting of the
      * value (with key 0) and optionally a style with key `style` and/or a
