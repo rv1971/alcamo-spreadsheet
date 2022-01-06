@@ -44,6 +44,28 @@ class ColTest extends TestCase
         ];
     }
 
+    /**
+     * @dataProvider addProvider
+     */
+    public function testAdd($value, $diff, $expectedValue)
+    {
+        $this->assertEquals(
+            Col::newFromString($expectedValue),
+            (Col::newFromString($value))->add($diff)
+        );
+    }
+
+    public function addProvider()
+    {
+        return [
+            [ 'A', 3, 'D' ],
+            [ 'AZW', 5, 'BAB' ],
+            [ 'X', -2, 'V' ],
+            [ 'AB', -4, 'X' ],
+            [ 'IAD', -6, 'HZX' ]
+        ];
+    }
+
     public function testSyntaxException()
     {
         $this->expectException(SyntaxError::class);

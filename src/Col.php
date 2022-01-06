@@ -41,12 +41,43 @@ class Col
     /// return a new object with decremented value
     public function dec(): self
     {
-        $value = $this->value_;
+        return new self($this->decString($this->value_));
+    }
 
+    /// return a new object with $diff added
+    public function add(int $diff): self
+    {
+        switch (true) {
+            case $diff > 0:
+                $result = clone ($this);
+
+                for ($i = 0; $i < $diff; $i++) {
+                    $result->value_++;
+                }
+
+                return $result;
+
+            case $diff < 0:
+                $value = $this->value_;
+
+                for ($i = $diff; $i < 0; $i++) {
+                    $value = $this->decString($value);
+                }
+
+                return new self($value);
+
+            default:
+                return clone $this;
+        }
+    }
+
+    /// Decrement a string representing a column
+    private function decString(string $value): string
+    {
         for ($i = strlen($value) - 1; $i >= 0; $i--) {
             if ($value[$i] != 'A') {
                 $value[$i] = chr(ord($value[$i]) - 1);
-                return new self($value);
+                return $value;
             } else {
                 $value[$i] = 'Z';
 
@@ -55,7 +86,7 @@ class Col
                         throw new Underflow();
                     }
 
-                    return new self(substr($value, 1));
+                    return substr($value, 1);
                 }
             }
         }
