@@ -102,23 +102,19 @@ class Worksheet extends PhpOfficeWorksheet
         return $this;
     }
 
-    public function moveCol(int $distance): self
+    public function moveCol(?int $distance = 1): self
     {
         $this->col_ = $this->col_->add($distance);
         return $this;
     }
 
-    public function moveRow(int $distance): self
+    public function moveRow(?int $distance = 1): self
     {
         $this->row_ += $distance;
         return $this;
     }
 
     /**
-     * @param $cellData Either a non-array value or an array consisting of the
-     * value (with key 0) and optionally a style with key `style` and/or a
-     * data type with key `type`.
-     *
      * @param $coordinate The cell coordinate. If not given, @ref $col_
      * and @ref $row_ are used.
      *
@@ -126,25 +122,22 @@ class Worksheet extends PhpOfficeWorksheet
      *
      * @invariant Does not modify @ref $col_ nor @ref $row_.
      */
-    public function writeCell($cellData, string $coordinate = null): self
-    {
-        if (is_array($cellData)) {
-            $cell = $this->getCell($coordinate ?? $this->col_ . $this->row_);
+    public function writeCell(
+        $value,
+        ?array $style = null,
+        ?string $type = null,
+        string $coordinate = null
+    ): self {
+        $cell = $this->getCell($coordinate ?? $this->col_ . $this->row_);
 
-            if (isset($cellData['type'])) {
-                $cell->setValueExplicit($cellData[0], $cellData['type']);
-            } else {
-                $cell->setValue($cellData[0]);
-            }
-
-            if (isset($cellData['style'])) {
-                $cell->getStyle()->applyFromArray($cellData['style']);
-            }
+        if (isset($type)) {
+            $cell->setValueExplicit($value, $type);
         } else {
-            $this->setCellValue(
-                $coordinate ?? $this->col_ . $this->row_,
-                $cellData
-            );
+            $cell->setValue($value);
+        }
+
+        if (isset($style)) {
+            $cell->getStyle()->applyFromArray($style);
         }
 
         return $this;
@@ -153,7 +146,10 @@ class Worksheet extends PhpOfficeWorksheet
     /**
      * @brief Write a horizontal range of cells.
      *
-     * @param $rowData Array of $cellData as used in writeCell().
+     * @param $rowData Array of items, each of which is
+     * - either a non-array value
+     * - or an array consisting of the value (with key 0) and optionally a
+     * style with key `style` and/or a data type with key `type`.
      *
      * @param $rowStyle Style data applied to the cells written.
      *
@@ -168,7 +164,14 @@ class Worksheet extends PhpOfficeWorksheet
         $col = $this->col_;
 
         foreach ($rowData as $cellData) {
-            $this->writeCell($cellData, $col . $this->row_);
+            $cellData = (array)$cellData;
+
+            $this->writeCell(
+                $cellData[0],
+                $cellData['style'] ?? null,
+                $cellData['type'] ?? null,
+                $col . $this->row_
+            );
             $col = $col->inc();
         }
 
@@ -187,7 +190,10 @@ class Worksheet extends PhpOfficeWorksheet
     /**
      * @brief Write a vertical range of cells.
      *
-     * @param $colData Array of $cellData as used in writeCell().
+     * @param $colData Array of items, each of which is
+     * - either a non-array value
+     * - or an array consisting of the value (with key 0) and optionally a
+     * style with key `style` and/or a data type with key `type`.
      *
      * @param $colStyle Style data applied to the cells written.
      *
@@ -202,7 +208,14 @@ class Worksheet extends PhpOfficeWorksheet
         $row = $this->row_;
 
         foreach ($colData as $cellData) {
-            $this->writeCell($cellData, $this->col_ . $row++);
+            $cellData = (array)$cellData;
+
+            $this->writeCell(
+                $cellData[0],
+                $cellData['style'] ?? null,
+                $cellData['type'] ?? null,
+                $this->col_ . $row++
+            );
         }
 
         if (isset($colStyle)) {

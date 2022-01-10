@@ -139,11 +139,9 @@ class WorksheetTest extends TestCase
         );
 
         $sheet0->writeCell(
-            [
-                1,
-                'type' => DataType::TYPE_BOOL,
-                'style' => [ 'font' => [ 'bold' => true ] ]
-            ],
+            1,
+            [ 'font' => [ 'bold' => true ] ],
+            DataType::TYPE_BOOL,
             'B3'
         );
 
