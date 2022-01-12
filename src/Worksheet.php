@@ -164,14 +164,17 @@ class Worksheet extends PhpOfficeWorksheet
         $col = $this->col_;
 
         foreach ($rowData as $cellData) {
-            $cellData = (array)$cellData;
+            if (is_array($cellData)) {
+                $this->writeCell(
+                    $cellData[0],
+                    $cellData['style'] ?? null,
+                    $cellData['type'] ?? null,
+                    $col . $this->row_
+                );
+            } else {
+                $this->setCellValue($col . $this->row_, $cellData);
+            }
 
-            $this->writeCell(
-                $cellData[0],
-                $cellData['style'] ?? null,
-                $cellData['type'] ?? null,
-                $col . $this->row_
-            );
             $col = $col->inc();
         }
 
@@ -208,14 +211,16 @@ class Worksheet extends PhpOfficeWorksheet
         $row = $this->row_;
 
         foreach ($colData as $cellData) {
-            $cellData = (array)$cellData;
-
-            $this->writeCell(
-                $cellData[0],
-                $cellData['style'] ?? null,
-                $cellData['type'] ?? null,
-                $this->col_ . $row++
-            );
+            if (is_array($cellData)) {
+                $this->writeCell(
+                    $cellData[0],
+                    $cellData['style'] ?? null,
+                    $cellData['type'] ?? null,
+                    $this->col_ . $row++
+                );
+            } else {
+                $this->setCellValue($this->col_ . $row++, $cellData);
+            }
         }
 
         if (isset($colStyle)) {
