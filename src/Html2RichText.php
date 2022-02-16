@@ -65,6 +65,29 @@ class Html2RichText
 
     public function create($html): RichText
     {
+        $this->init();
+
+        return $this->parse($html);
+    }
+
+    public function append(RichText $richText, $html): RichText
+    {
+        $this->init($richText);
+
+        return $this->parse($html);
+    }
+
+    private function init(?RichText $richText = null)
+    {
+        $this->richText_ = $richText ?? new RichText();
+        $this->font_ = new Font();
+        $this->fontStack_ = [];
+        $this->listLevel_ = 0;
+        $this->stringData_ = '';
+    }
+
+    private function parse($html): RichText
+    {
         if ($html instanceof \DOMNode) {
             $dom = $html;
         } else {
@@ -76,8 +99,6 @@ class Html2RichText
              * lot of unwanted modifications to the content. */
             $dom->loadXML("<body>$html</body>");
         }
-
-        $this->init();
 
         $this->parseChildren($dom);
 
@@ -94,15 +115,6 @@ class Html2RichText
         $lastElement->setText(rtrim($lastElement->getText()));
 
         return $this->richText_;
-    }
-
-    private function init()
-    {
-        $this->richText_ = new RichText();
-        $this->font_ = new Font();
-        $this->fontStack_ = [];
-        $this->listLevel_ = 0;
-        $this->stringData_ = '';
     }
 
     private function parseChildren(\DOMNode $parent)

@@ -189,4 +189,30 @@ class Html2RichTextTest extends TestCase
 
         ];
     }
+
+    /**
+     * @dataProvider appendProvider
+     */
+    public function testAppend($richText, $htmlText, $expectedRichText)
+    {
+        $this->assertEquals(
+            $expectedRichText,
+            (new Html2RichText())->append($richText, $htmlText)
+        );
+    }
+
+    public function appendProvider()
+    {
+        return [
+            [
+                (new RT())->addText(new R('Lorem ipsum ')),
+                '<b>dolor sit amet</b>',
+                (new RT())->addText(new R('Lorem ipsum '))
+                    ->addText(
+                        (new R('dolor sit amet'))
+                            ->setFont((new Font())->setBold(true))
+                    )
+            ]
+        ];
+    }
 }
