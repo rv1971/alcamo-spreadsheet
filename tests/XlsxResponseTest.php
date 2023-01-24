@@ -2,7 +2,7 @@
 
 namespace alcamo\spreadsheet;
 
-use alcamo\iana\MediaType;
+use alcamo\rdfa\MediaType;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PHPUnit\Framework\TestCase;
 

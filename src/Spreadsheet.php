@@ -8,19 +8,17 @@
 
 namespace alcamo\spreadsheet;
 
-use alcamo\rdfa\{HasRdfaDataTrait, RdfaData};
+use alcamo\rdfa\RdfaData;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet as PhpOfficeSpreadsheet;
 
 /// Spreadsheet with RDFa data
 class Spreadsheet extends PhpOfficeSpreadsheet
 {
-    use HasRdfaDataTrait;
-
     public const WORKSHEET_CLASS = Worksheet::class;
 
     /// Map of RDFa properties to methods of the Properties class
-    public const PROP_2_METHODS = [
+    public const PROP_TO_METHODS = [
         'dc:created'   => 'setCreated',
         'dc:creator'   => [ 'setCreator', 'setLastModifiedBy' ],
         'dc:modified'  => 'setModified',
@@ -29,7 +27,7 @@ class Spreadsheet extends PhpOfficeSpreadsheet
     ];
 
     /// Map of RDFa properties to spreadsheet custom properties.
-    public const PROP_2_CUSTOM_PROP = [
+    public const PROP_TO_CUSTOM_PROP = [
         'dc:audience'     => 'Audience',
         'dc:identifier'   => 'Identifier',
         'dc:language'     => 'Language',
@@ -38,6 +36,8 @@ class Spreadsheet extends PhpOfficeSpreadsheet
 
     /// Default style used as argument for applyFromArray()
     public const DEFAULT_STYLE = [];
+
+    private $rdfaData_;
 
     /**
      * @brief Create new spreadsheet and set its metadata
@@ -52,7 +52,7 @@ class Spreadsheet extends PhpOfficeSpreadsheet
 
         $this->rdfaData_ = $rdfaData ?? RdfaData::newFromIterable([]);
 
-        foreach (static::PROP_2_METHODS as $prop => $methods) {
+        foreach (static::PROP_TO_METHODS as $prop => $methods) {
             if (isset($this->rdfaData_[$prop])) {
                 foreach ((array)$methods as $method) {
                     $this->getProperties()->$method(
@@ -62,7 +62,7 @@ class Spreadsheet extends PhpOfficeSpreadsheet
             }
         }
 
-        foreach (static::PROP_2_CUSTOM_PROP as $prop => $customProp) {
+        foreach (static::PROP_TO_CUSTOM_PROP as $prop => $customProp) {
             if (isset($this->rdfaData_[$prop])) {
                 $dataType =
                     is_string($this->rdfaData_[$prop]->getObject())
@@ -80,6 +80,11 @@ class Spreadsheet extends PhpOfficeSpreadsheet
         $this->removeSheetByIndex(0);
 
         $this->getDefaultStyle()->applyFromArray(static::DEFAULT_STYLE);
+    }
+
+    public function getRdfaData(): RdfaData
+    {
+        return $this->rdfaData_;
     }
 
     public function createSheet($sheetIndex = null)

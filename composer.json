@@ -6,8 +6,8 @@
     "require": {
         "php": "7.3 - 8.0",
         "alcamo/exception": "^0.1",
-        "alcamo/http": "^0.7",
-        "phpoffice/phpspreadsheet": "^1.20"
+        "alcamo/http": "^0.8",
+        "phpoffice/phpspreadsheet": "^1.25"
     },
     "autoload": {
 	"psr-4": {

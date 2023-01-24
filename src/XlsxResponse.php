@@ -26,8 +26,8 @@ class XlsxResponse extends Response
             RdfaData::newFromIterable(
                 [
                     'dc:format' => static::MEDIA_TYPE,
-                    'header:content-length' => ftell($resource),
-                    'header:content-disposition'
+                    'http:content-length' => ftell($resource),
+                    'http:content-disposition'
                     => $rdfaData['dc:identifier']
                     . (isset($rdfaData['owl:versionInfo'])
                        ? '_' . $rdfaData['owl:versionInfo']
