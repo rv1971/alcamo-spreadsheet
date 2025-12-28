@@ -25,14 +25,16 @@ class XlsxResponse extends Response
         $rdfaData = $rdfaData->add(
             RdfaData::newFromIterable(
                 [
-                    'dc:format' => static::MEDIA_TYPE,
-                    'http:content-length' => ftell($resource),
-                    'http:content-disposition'
-                    => $rdfaData['dc:identifier']
-                    . (isset($rdfaData['owl:versionInfo'])
-                       ? '_' . $rdfaData['owl:versionInfo']
-                       : '')
-                    . '.xlsx'
+                    [ 'dc:format', static::MEDIA_TYPE ],
+                    [ 'http:content-length', ftell($resource) ],
+                    [
+                        'http:content-disposition',
+                        $rdfaData['dc:identifier']
+                            . (isset($rdfaData['owl:versionInfo'])
+                               ? '_' . $rdfaData['owl:versionInfo']
+                               : '')
+                            . '.xlsx'
+                    ]
                 ]
             )
         );

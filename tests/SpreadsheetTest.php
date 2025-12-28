@@ -18,15 +18,15 @@ class SpreadsheetTest extends TestCase
     {
         $rdfaData = RdfaData::newFromIterable(
             [
-                'dc:created'      => '2021-12-27',
-                'dc:creator'      => 'rv1971',
-                'dc:modified'     => '2021-12-28',
-                'dc:publisher'    => 'Example.org ltd.',
-                'dc:title'        => 'Foo vs. Bar',
-                'dc:audience'     => 'World',
-                'dc:identifier'   => '123e4567-e89b-12d3-a456-426614174000',
-                'dc:language'     => 'eu',
-                'owl:versionInfo' => '0.42.1'
+                [ 'dc:created',      '2021-12-27' ],
+                [ 'dc:creator',      'rv1971' ],
+                [ 'dc:modified',     '2021-12-28' ],
+                [ 'dc:publisher',    'Example.org ltd.' ],
+                [ 'dc:title',        'Foo vs. Bar' ],
+                [ 'dc:audience',     'World' ],
+                [ 'dc:identifier',   '123e4567-e89b-12d3-a456-426614174000' ],
+                [ 'dc:language',     'eu' ],
+                [ 'owl:versionInfo', '0.42.1' ]
             ]
         );
 
@@ -41,7 +41,7 @@ class SpreadsheetTest extends TestCase
         );
 
         $this->assertSame(
-            $rdfaData['dc:creator']->getObject(),
+            array_values($rdfaData['dc:creator'])[0]->getObject(),
             $spreadsheet->getProperties()->getCreator()
         );
 
@@ -54,27 +54,27 @@ class SpreadsheetTest extends TestCase
         );
 
         $this->assertSame(
-            $rdfaData['dc:publisher']->getObject(),
+            array_values($rdfaData['dc:publisher'])[0]->getObject(),
             $spreadsheet->getProperties()->getCompany()
         );
 
         $this->assertSame(
-            $rdfaData['dc:title']->getObject(),
+            array_values($rdfaData['dc:title'])[0]->getObject(),
             $spreadsheet->getProperties()->getTitle()
         );
 
         $this->assertSame(
-            $rdfaData['dc:audience']->getObject(),
+            array_values($rdfaData['dc:audience'])[0]->getObject(),
             $spreadsheet->getProperties()->getCustomPropertyValue('Audience')
         );
 
         $this->assertSame(
-            $rdfaData['dc:identifier']->getObject(),
+            array_values($rdfaData['dc:identifier'])[0]->getObject(),
             $spreadsheet->getProperties()->getCustomPropertyValue('Identifier')
         );
 
         $this->assertEquals(
-            (string)$rdfaData['dc:language'],
+            (string)array_values($rdfaData['dc:language'])[0],
             $spreadsheet->getProperties()->getCustomPropertyValue('Language')
         );
 

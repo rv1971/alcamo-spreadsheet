@@ -5,8 +5,7 @@
     "license": "Apache-2.0",
     "require": {
         "php": "7.3 - 8.0",
-        "alcamo/exception": "^0.1",
-        "alcamo/http": "^0.8",
+        "alcamo/http": "^0.9",
         "phpoffice/phpspreadsheet": "^1.25"
     },
     "autoload": {
