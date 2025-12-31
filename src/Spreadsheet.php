@@ -56,11 +56,7 @@ class Spreadsheet extends PhpOfficeSpreadsheet
             if (isset($this->rdfaData_[$prop])) {
                 foreach ((array)$methods as $method) {
                     $this->getProperties()->$method(
-                        (string)(
-                            is_array($this->rdfaData_[$prop])
-                                ? array_values($this->rdfaData_[$prop])[0]
-                                : $this->rdfaData_[$prop]
-                        )
+                        (string)$this->rdfaData_[$prop]->first()
                     );
                 }
             }
@@ -69,21 +65,13 @@ class Spreadsheet extends PhpOfficeSpreadsheet
         foreach (static::PROP_TO_CUSTOM_PROP as $prop => $customProp) {
             if (isset($this->rdfaData_[$prop])) {
                 $dataType =
-                    is_string((
-                            is_array($this->rdfaData_[$prop])
-                                ? array_values($this->rdfaData_[$prop])[0]
-                                : $this->rdfaData_[$prop]
-                        )->getObject())
+                    is_string($this->rdfaData_[$prop]->first()->getObject())
                     ? DataType::TYPE_STRING
                     : null;
 
                 $this->getProperties()->setCustomProperty(
                     $customProp,
-                    (string)(
-                        is_array($this->rdfaData_[$prop])
-                            ? array_values($this->rdfaData_[$prop])[0]
-                            : $this->rdfaData_[$prop]
-                    ),
+                    (string)$this->rdfaData_[$prop]->first(),
                     $dataType
                 );
             }

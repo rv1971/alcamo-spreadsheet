@@ -36,12 +36,12 @@ class SpreadsheetTest extends TestCase
         $created->setTimestamp($spreadsheet->getProperties()->getCreated());
 
         $this->assertEquals(
-            $rdfaData['dc:created']->getObject(),
+            $rdfaData['dc:created']->first()->getObject(),
             $created
         );
 
         $this->assertSame(
-            array_values($rdfaData['dc:creator'])[0]->getObject(),
+            $rdfaData['dc:creator']->first()->getObject(),
             $spreadsheet->getProperties()->getCreator()
         );
 
@@ -49,37 +49,37 @@ class SpreadsheetTest extends TestCase
         $modified->setTimestamp($spreadsheet->getProperties()->getModified());
 
         $this->assertEquals(
-            $rdfaData['dc:modified']->getObject(),
+            $rdfaData['dc:modified']->first()->getObject(),
             $modified
         );
 
         $this->assertSame(
-            array_values($rdfaData['dc:publisher'])[0]->getObject(),
+            $rdfaData['dc:publisher']->first()->getObject(),
             $spreadsheet->getProperties()->getCompany()
         );
 
         $this->assertSame(
-            array_values($rdfaData['dc:title'])[0]->getObject(),
+            $rdfaData['dc:title']->first()->getObject(),
             $spreadsheet->getProperties()->getTitle()
         );
 
         $this->assertSame(
-            array_values($rdfaData['dc:audience'])[0]->getObject(),
+            $rdfaData['dc:audience']->first()->getObject(),
             $spreadsheet->getProperties()->getCustomPropertyValue('Audience')
         );
 
         $this->assertSame(
-            array_values($rdfaData['dc:identifier'])[0]->getObject(),
+            $rdfaData['dc:identifier']->first()->getObject(),
             $spreadsheet->getProperties()->getCustomPropertyValue('Identifier')
         );
 
         $this->assertEquals(
-            (string)array_values($rdfaData['dc:language'])[0],
+            (string)$rdfaData['dc:language']->first(),
             $spreadsheet->getProperties()->getCustomPropertyValue('Language')
         );
 
         $this->assertSame(
-            $rdfaData['owl:versionInfo']->getObject(),
+            $rdfaData['owl:versionInfo']->first()->getObject(),
             $spreadsheet->getProperties()->getCustomPropertyValue('Version')
         );
 

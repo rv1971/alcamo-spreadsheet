@@ -29,9 +29,9 @@ class XlsxResponse extends Response
                     [ 'http:content-length', ftell($resource) ],
                     [
                         'http:content-disposition',
-                        array_values($rdfaData['dc:identifier'])[0]
+                        $rdfaData['dc:identifier']->first()
                             . (isset($rdfaData['owl:versionInfo'])
-                               ? '_' . $rdfaData['owl:versionInfo']
+                               ? '_' . $rdfaData['owl:versionInfo']->first()
                                : '')
                             . '.xlsx'
                     ]
