@@ -29,7 +29,7 @@ class XlsxResponse extends Response
                     [ 'http:content-length', ftell($resource) ],
                     [
                         'http:content-disposition',
-                        $rdfaData['dc:identifier']
+                        array_values($rdfaData['dc:identifier'])[0]
                             . (isset($rdfaData['owl:versionInfo'])
                                ? '_' . $rdfaData['owl:versionInfo']
                                : '')

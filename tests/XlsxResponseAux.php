@@ -12,8 +12,8 @@ require getenv('PHPUNIT_COMPOSER_INSTALL');
 $spreadsheet = new Spreadsheet(
     RdfaData::newFromIterable(
         [
-            'dc:identifier' => 'lorem-ipsum',
-            'owl:versionInfo' => '3.14'
+            [ 'dc:identifier', 'lorem-ipsum' ],
+            [ 'owl:versionInfo', '3.14' ]
         ]
     )
 );
