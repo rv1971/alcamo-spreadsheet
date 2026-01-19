@@ -10,7 +10,7 @@ class ColTest extends TestCase
     /**
      * @dataProvider incDecProvider
      */
-    public function testIncDec($col, $incCol)
+    public function testIncDec($col, $incCol): void
     {
         $this->assertSame(
             (string)((Col::newFromString($col))->inc()),
@@ -23,7 +23,7 @@ class ColTest extends TestCase
         );
     }
 
-    public function incDecProvider()
+    public function incDecProvider(): array
     {
         return [
             [ 'A', 'B' ],
@@ -33,21 +33,22 @@ class ColTest extends TestCase
             [ 'AB', 'AC' ],
             [ 'AZ', 'BA' ],
             [ 'BA', 'BB' ],
-            [ 'BB', 'BC' ],
+            [ 'BX', 'BY' ],
             [ 'BZ', 'CA' ],
             [ 'ZZ', 'AAA' ],
             [ 'AAA', 'AAB' ],
             [ 'AAB', 'AAC' ],
             [ 'AAZ', 'ABA' ],
             [ 'ABZ', 'ACA' ],
-            [ 'AZZ', 'BAA' ]
+            [ 'AZZ', 'BAA' ],
+            [ 'YZZ', 'ZAA' ]
         ];
     }
 
     /**
      * @dataProvider addProvider
      */
-    public function testAdd($value, $diff, $expectedValue)
+    public function testAdd($value, $diff, $expectedValue): void
     {
         $this->assertEquals(
             Col::newFromString($expectedValue),
@@ -55,18 +56,24 @@ class ColTest extends TestCase
         );
     }
 
-    public function addProvider()
+    public function addProvider(): array
     {
         return [
-            [ 'A', 3, 'D' ],
+            [ 'AAA', 0, 'AAA' ],
+            [ 'A', 1, 'B' ],
+            [ 'B', 2, 'D' ],
+            [ 'D', 3, 'G' ],
             [ 'AZW', 5, 'BAB' ],
+            [ 'G', -1, 'F' ],
+            [ 'AAA', -1, 'ZZ' ],
             [ 'X', -2, 'V' ],
+            [ 'AGB', -2, 'AFZ' ],
             [ 'AB', -4, 'X' ],
             [ 'IAD', -6, 'HZX' ]
         ];
     }
 
-    public function testSyntaxException()
+    public function testSyntaxException(): void
     {
         $this->expectException(SyntaxError::class);
         $this->expectExceptionMessage('Syntax error in "Aa"');
@@ -74,7 +81,7 @@ class ColTest extends TestCase
         Col::newFromString('Aa');
     }
 
-    public function testUnderflowException()
+    public function testUnderflowException(): void
     {
         $this->expectException(Underflow::class);
         $this->expectExceptionMessage(

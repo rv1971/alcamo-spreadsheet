@@ -14,7 +14,7 @@ class MySpreadsheet extends Spreadsheet
 
 class SpreadsheetTest extends TestCase
 {
-    public function testBasics()
+    public function testBasics(): void
     {
         $rdfaData = RdfaData::newFromIterable(
             [

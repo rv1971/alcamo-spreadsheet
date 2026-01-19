@@ -20,4 +20,13 @@ $spreadsheet = new Spreadsheet(
 
 $spreadsheet->addSheet(new Worksheet($spreadsheet, $wsTitle));
 
-(new XlsxResponse($spreadsheet))->emit();
+$response = new XlsxResponse($spreadsheet);
+
+fwrite(
+    STDERR,
+    $response->getRdfaData()['dc:format']->first() . ' '
+    . $response->getRdfaData()['http:content-disposition']->first() . ' '
+    . $response->getRdfaData()['http:content-length']->first() . "\n"
+);
+
+$response->emit();

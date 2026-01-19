@@ -12,7 +12,11 @@ use alcamo\rdfa\RdfaData;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet as PhpOfficeSpreadsheet;
 
-/// Spreadsheet with RDFa data
+/**
+ * @brief Spreadsheet with RDFa data
+ *
+ * @date Last reviewed 2026-01-14
+ */
 class Spreadsheet extends PhpOfficeSpreadsheet
 {
     public const WORKSHEET_CLASS = Worksheet::class;
@@ -46,11 +50,22 @@ class Spreadsheet extends PhpOfficeSpreadsheet
      * - Remove the initial worksheet.
      * - Set the default style to @ref DEFAULT_STYLE.
      */
-    public function __construct(?RdfaData $rdfaData = null)
+    public function __construct($rdfaData = null)
     {
         parent::__construct();
 
-        $this->rdfaData_ = $rdfaData ?? RdfaData::newFromIterable([]);
+        switch (true) {
+            case $rdfaData instanceof RdfaData:
+                $this->rdfaData_ = $rdfaData;
+                break;
+
+            case isset($rdfaData):
+                $this->rdfaData_ = RdfaData::newFromIterable($rdfaData);
+                break;
+
+            default:
+                $this->rdfaData_ = new RdfaData();
+        }
 
         foreach (static::PROP_TO_METHODS as $prop => $methods) {
             if (isset($this->rdfaData_[$prop])) {
@@ -92,6 +107,7 @@ class Spreadsheet extends PhpOfficeSpreadsheet
         $class = static::WORKSHEET_CLASS;
 
         $newSheet = new $class($this);
+
         $this->addSheet($newSheet, $sheetIndex);
 
         return $newSheet;

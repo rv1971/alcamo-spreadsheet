@@ -13,6 +13,8 @@ use PhpOffice\PhpSpreadsheet\Style\{Color, Font};
  * version.
  *
  * @sa Basic idea inspired by [PhpSpreadsheet\Helper\Html](https://github.com/PHPOffice/PhpSpreadsheet/blob/master/src/PhpSpreadsheet/Helper/Html.php)
+ *
+ * @date Last reviewed 2026-01-15
  */
 class Html2RichText
 {
@@ -24,7 +26,7 @@ class Html2RichText
     /**
      * @brief Map some tag names to start hooks
      *
-     * A start hook consits of the name of a method and a boolean telling
+     * A start hook consists of the name of a method and a boolean telling
      * whether the method might modfy the font.
      */
     public const START_HOOKS = [
@@ -46,6 +48,7 @@ class Html2RichText
         'ul'     => [ 'startUl', false ]
     ];
 
+    /// Map some tag names to end hooks
     public const END_HOOKS = [
         'br' => 'appendLf',
         'h1' => 'appendLfLf',
@@ -63,6 +66,11 @@ class Html2RichText
     private $listLevel_;  ///< nesting level of \<ul>
     private $stringData_; ///< string data collected so far
 
+    /**
+     * @brief Create rich text from HTML
+     *
+     * @param DOMNode|string $html HTML data
+     */
     public function create($html): RichText
     {
         $this->init();
@@ -70,6 +78,11 @@ class Html2RichText
         return $this->parse($html);
     }
 
+    /**
+     * @brief Append rich text created from HTML to existing rich text
+     *
+     * @param DOMNode|string $html HTML data
+     */
     public function append(RichText $richText, $html): RichText
     {
         $this->init($richText);
@@ -102,9 +115,7 @@ class Html2RichText
 
         $this->parseChildren($dom);
 
-        if ($this->stringData_ != '') {
-            $this->addRun();
-        }
+        $this->addRun();
 
         /* Remove trailing whitespace from last rich text element. */
 
@@ -117,7 +128,7 @@ class Html2RichText
         return $this->richText_;
     }
 
-    private function parseChildren(\DOMNode $parent)
+    private function parseChildren(\DOMNode $parent): void
     {
         foreach ($parent->childNodes as $node) {
             if ($node instanceof \DOMText) {
@@ -128,9 +139,8 @@ class Html2RichText
 
                 $startHook = static::START_HOOKS[$tagName] ?? null;
 
-                $modifiesFont =
-                    isset($startHook) && $startHook[1]
-                    || $node->attributes->length;
+                $modifiesFont = isset($startHook) && $startHook[1]
+                || $node->attributes->length;
 
                 if ($modifiesFont) {
                     $this->addRun();
@@ -180,7 +190,7 @@ class Html2RichText
         }
     }
 
-    private function addRun()
+    private function addRun(): void
     {
         if ($this->stringData_ != '') {
             $this->richText_
@@ -191,37 +201,37 @@ class Html2RichText
         }
     }
 
-    private function setBold()
+    private function setBold(): void
     {
         $this->font_->setBold(true);
     }
 
-    private function setMonospace()
+    private function setMonospace(): void
     {
         $this->font_->setName(static::MONOSPACE_FONT);
     }
 
-    private function setStrikethrough()
+    private function setStrikethrough(): void
     {
         $this->font_->setStrikethrough(true);
     }
 
-    private function startH1()
+    private function startH1(): void
     {
         $this->font_->setBold(true)->setSize(static::H1_SIZE);
     }
 
-    private function startH2()
+    private function startH2(): void
     {
         $this->font_->setBold(true)->setSize(static::H2_SIZE);
     }
 
-    private function startH3()
+    private function startH3(): void
     {
         $this->font_->setBold(true)->setSize(static::H3_SIZE);
     }
 
-    private function startUl(\DOMElement $node)
+    private function startUl(\DOMElement $node): void
     {
         if (
             !($node->previousSibling instanceof \DOMElement
@@ -237,42 +247,42 @@ class Html2RichText
         $this->listLevel_++;
     }
 
-    private function setSubscript()
+    private function setSubscript(): void
     {
         $this->font_->setSubscript(true);
     }
 
-    private function setSuperscript()
+    private function setSuperscript(): void
     {
         $this->font_->setSuperscript(true);
     }
 
-    private function setUnderline()
+    private function setUnderline(): void
     {
         $this->font_->setUnderline(true);
     }
 
-    private function appendBullet(\DOMElement $node)
+    private function appendBullet(\DOMElement $node): void
     {
         $this->stringData_ .= str_pad('', 3 * $this->listLevel_ - 3) . ' • ';
     }
 
-    private function setItalic()
+    private function setItalic(): void
     {
         $this->font_->setItalic(true);
     }
 
-    private function appendLf()
+    private function appendLf(): void
     {
         $this->stringData_ .= "\n";
     }
 
-    private function appendLfLf()
+    private function appendLfLf(): void
     {
         $this->stringData_ .= "\n\n";
     }
 
-    private function endLi(\DOMElement $node)
+    private function endLi(\DOMElement $node): void
     {
         if (
             !($node->lastChild instanceof \DOMElement
@@ -286,7 +296,7 @@ class Html2RichText
         }
     }
 
-    private function endUl()
+    private function endUl(): void
     {
         $this->listLevel_--;
     }

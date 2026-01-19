@@ -11,7 +11,7 @@ class Html2RichTextTest extends TestCase
     /**
      * @dataProvider createProvider
      */
-    public function testCreate($htmlText, $expectedRichText)
+    public function testCreate($htmlText, $expectedRichText): void
     {
         $this->assertEquals(
             $expectedRichText,
@@ -19,7 +19,7 @@ class Html2RichTextTest extends TestCase
         );
     }
 
-    public function createProvider()
+    public function createProvider(): array
     {
         return [
             [
@@ -193,7 +193,7 @@ class Html2RichTextTest extends TestCase
     /**
      * @dataProvider appendProvider
      */
-    public function testAppend($richText, $htmlText, $expectedRichText)
+    public function testAppend($richText, $htmlText, $expectedRichText): void
     {
         $this->assertEquals(
             $expectedRichText,
@@ -201,7 +201,7 @@ class Html2RichTextTest extends TestCase
         );
     }
 
-    public function appendProvider()
+    public function appendProvider(): array
     {
         return [
             [

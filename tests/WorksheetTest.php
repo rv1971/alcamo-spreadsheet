@@ -88,20 +88,25 @@ class WorksheetTest extends TestCase
 
         $this->assertSame('A', (string)$sheet0->getCol());
         $this->assertSame(1, $sheet0->getRow());
+        $this->assertSame('A1', $sheet0->getCurrentCell()->getCoordinate());
 
         $sheet0->setCol('AA');
         $this->assertSame('AA', (string)$sheet0->getCol());
+        $this->assertSame('AA1', $sheet0->getCurrentCell()->getCoordinate());
 
         $sheet0->setRow(42);
         $this->assertSame(42, $sheet0->getRow());
+        $this->assertSame('AA42', $sheet0->getCurrentCell()->getCoordinate());
 
         $sheet0->setColRow('AZ', 43);
         $this->assertSame('AZ', (string)$sheet0->getCol());
         $this->assertSame(43, $sheet0->getRow());
+        $this->assertSame('AZ43', $sheet0->getCurrentCell()->getCoordinate());
 
         $sheet0->setCoordinate('B24');
         $this->assertSame('B', (string)$sheet0->getCol());
         $this->assertSame(24, $sheet0->getRow());
+        $this->assertSame('B24', $sheet0->getCurrentCell()->getCoordinate());
     }
 
     public function testMoveCol()
@@ -142,7 +147,7 @@ class WorksheetTest extends TestCase
             1,
             [ 'font' => [ 'bold' => true ] ],
             DataType::TYPE_BOOL,
-            'B3'
+            $sheet0->getCell('B3')
         );
 
         $this->assertSame(
@@ -169,6 +174,8 @@ class WorksheetTest extends TestCase
             ],
             [ 'font' => [ 'italic' => true ] ]
         );
+
+        $this->assertSame("D3", $sheet0->getCoordinate());
 
         $this->assertSame(
             'D3',
@@ -209,6 +216,18 @@ class WorksheetTest extends TestCase
             true,
             $sheet0->getCell('D2')->getStyle()->getFont()->getItalic()
         );
+
+        $sheet0->writeRow([ 'qux' ], null, null, 3);
+
+        $this->assertSame(
+            'qux',
+            $sheet0->getCell('D3')->getValue()
+        );
+
+        $this->assertSame(
+            'D3',
+            $sheet0->getCoordinate()
+        );
     }
 
     public function testWriteCol()
@@ -229,6 +248,8 @@ class WorksheetTest extends TestCase
             ],
             [ 'font' => [ 'bold' => true ] ]
         );
+
+        $this->assertSame("E4", $sheet0->getCoordinate());
 
         $this->assertSame(
             'E4',
@@ -258,6 +279,18 @@ class WorksheetTest extends TestCase
         $this->assertSame(
             Alignment::HORIZONTAL_RIGHT,
             $sheet0->getCell('D5')->getStyle()->getAlignment()->getHorizontal()
+        );
+
+        $sheet0->writeCol([ 'corge' ], null, 'E');
+
+        $this->assertSame(
+            'corge',
+            $sheet0->getCell('E4')->getValue()
+        );
+
+        $this->assertSame(
+            'E4',
+            $sheet0->getCoordinate()
         );
     }
 
@@ -307,6 +340,21 @@ class WorksheetTest extends TestCase
         $this->assertSame(
             Font::UNDERLINE_DOUBLE,
             $sheet0->getCell('F8')->getStyle()->getFont()->getUnderline()
+        );
+
+        $sheet0->formatRows(
+            [
+                [ 'alignment' => [ 'vertical' => Alignment::VERTICAL_CENTER ] ],
+                [ 'font' => [ 'underline' => Font::UNDERLINE_DOUBLE ] ]
+            ],
+            'D',
+            'F',
+            9
+        );
+
+        $this->assertSame(
+            'B9',
+            $sheet0->getCoordinate()
         );
     }
 
@@ -402,6 +450,22 @@ class WorksheetTest extends TestCase
         $this->assertSame(
             34.0,
             $sheet0->getCell('D15')->getStyle()->getFont()->getSize()
+        );
+
+        $sheet0->formatCols(
+            [
+                [ 'font' => [ 'size' => 32 ] ],
+                [ 'font' => [ 'size' => 33 ] ],
+                [ 'font' => [ 'size' => 34 ] ],
+            ],
+            '11',
+            '15',
+            'E'
+        );
+
+        $this->assertSame(
+            'E10',
+            $sheet0->getCoordinate()
         );
     }
 }
