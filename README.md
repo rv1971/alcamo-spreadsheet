@@ -35,20 +35,20 @@ $worksheet->writeRow(
 
 This example is contained in this package as a file in the `bin`
 directory. If called through a webserver, it returns a spreadsheet
-(with `Content-Length` and 'Content-Type` headers) and suggests to
+(with `Content-Length` and `Content-Type` headers) and suggests to
 save it as `my-example_2.71.xlsx`.
 
 The spreadsheet contains data in the ranges B2:C2 and B3:C3 since in
-this example writeRow() automatically moves the current cell to the
+this example `writeRow()` automatically moves the current cell to the
 start of the next row.
 
 # Classes
 
-* Col - arithmetics with alphabetic spreadsheet column counters.
-* Html2RichText - a converter that creates Rich Text from simple HTML
-  with formatting such as colors.
-* Spreadsheet - an extension of the PhpOffice Spreadsheet class.
-* Worksheet - an extension of the PhpOffice Worksheet class.
-* XlsxResponse - an HTTP response containing a worksheet.
+* `Col` - arithmetics with alphabetic spreadsheet column counters.
+* `Html2RichText` - a converter that creates Rich Text from simple HTML
+  with formatting such as font color.
+* `Spreadsheet` - an extension of the PhpOffice Spreadsheet class.
+* `Worksheet` - an extension of the PhpOffice Worksheet class.
+* `XlsxResponse` - an HTTP response containing a worksheet.
 
 See the doxygen documentation for details.
