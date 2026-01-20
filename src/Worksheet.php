@@ -159,8 +159,8 @@ class Worksheet extends PhpOfficeWorksheet
      *
      * @param $type Data type to set explicitly, if given.
      *
-     * @param $cell The cell to write to. If not given, use the cell at the
-     * current position.
+     * @param Cell|string $cell The cell to write to, or its coordinates. If
+     * not given, use the cell at the current position.
      *
      * @return $this
      *
@@ -170,10 +170,16 @@ class Worksheet extends PhpOfficeWorksheet
         $value,
         ?array $style = null,
         ?string $type = null,
-        ?Cell $cell = null
+        $cell = null
     ): self {
-        if (!isset($cell)) {
-            $cell = $this->getCurrentCell();
+        switch (true) {
+            case !isset($cell):
+                $cell = $this->getCurrentCell();
+                break;
+
+            case !($cell instanceof Cell):
+                $cell = $this->getCell($cell);
+                break;
         }
 
         if (isset($type)) {

@@ -147,7 +147,7 @@ class WorksheetTest extends TestCase
             1,
             [ 'font' => [ 'bold' => true ] ],
             DataType::TYPE_BOOL,
-            $sheet0->getCell('B3')
+            'B3'
         );
 
         $this->assertSame(
