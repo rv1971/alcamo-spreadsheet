@@ -2,7 +2,7 @@
 
 namespace alcamo\spreadsheet;
 
-use alcamo\rdfa\RdfaData;
+use alcamo\rdfa\{DateTimeLiteral, RdfaData};
 use PHPUnit\Framework\TestCase;
 
 class MySpreadsheet extends Spreadsheet
@@ -32,7 +32,7 @@ class SpreadsheetTest extends TestCase
 
         $spreadsheet = new MySpreadsheet($rdfaData);
 
-        $created = new \DateTime();
+        $created = new DateTimeLiteral(new \DateTime());
         $created->setTimestamp($spreadsheet->getProperties()->getCreated());
 
         $this->assertEquals(
@@ -45,7 +45,7 @@ class SpreadsheetTest extends TestCase
             $spreadsheet->getProperties()->getCreator()
         );
 
-        $modified = new \DateTime();
+        $modified = new DateTimeLiteral(new \DateTime());
         $modified->setTimestamp($spreadsheet->getProperties()->getModified());
 
         $this->assertEquals(
@@ -59,7 +59,7 @@ class SpreadsheetTest extends TestCase
         );
 
         $this->assertSame(
-            $rdfaData['dc:title']->first()->getObject(),
+            (string)$rdfaData['dc:title']->first(),
             $spreadsheet->getProperties()->getTitle()
         );
 
