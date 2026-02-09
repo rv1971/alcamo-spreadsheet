@@ -32,8 +32,10 @@ class SpreadsheetTest extends TestCase
 
         $spreadsheet = new MySpreadsheet($rdfaData);
 
-        $created = new DateTimeLiteral(new \DateTime());
-        $created->setTimestamp($spreadsheet->getProperties()->getCreated());
+        $created = new DateTimeLiteral(
+            (new \DateTime())
+                ->setTimestamp($spreadsheet->getProperties()->getCreated())
+        );
 
         $this->assertEquals(
             $rdfaData['dc:created']->first()->getObject(),
@@ -45,8 +47,10 @@ class SpreadsheetTest extends TestCase
             $spreadsheet->getProperties()->getCreator()
         );
 
-        $modified = new DateTimeLiteral(new \DateTime());
-        $modified->setTimestamp($spreadsheet->getProperties()->getModified());
+        $modified = new DateTimeLiteral(
+            (new \DateTime())
+                ->setTimestamp($spreadsheet->getProperties()->getModified())
+        );
 
         $this->assertEquals(
             $rdfaData['dc:modified']->first()->getObject(),

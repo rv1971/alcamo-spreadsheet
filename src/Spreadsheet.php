@@ -64,7 +64,7 @@ class Spreadsheet extends PhpOfficeSpreadsheet
                 break;
 
             default:
-                $this->rdfaData_ = new RdfaData();
+                $this->rdfaData_ = RdfaData::newEmpty();
         }
 
         foreach (static::PROP_TO_METHODS as $prop => $methods) {
