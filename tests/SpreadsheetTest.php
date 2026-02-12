@@ -2,7 +2,7 @@
 
 namespace alcamo\spreadsheet;
 
-use alcamo\rdfa\{DateTimeLiteral, RdfaData};
+use alcamo\rdfa\{DateTimeLiteral, RdfaData, StringLiteral};
 use PHPUnit\Framework\TestCase;
 
 class MySpreadsheet extends Spreadsheet
@@ -42,9 +42,9 @@ class SpreadsheetTest extends TestCase
             $created
         );
 
-        $this->assertSame(
+        $this->assertEquals(
             $rdfaData['dc:creator']->first()->getObject(),
-            $spreadsheet->getProperties()->getCreator()
+            new StringLiteral($spreadsheet->getProperties()->getCreator())
         );
 
         $modified = new DateTimeLiteral(
@@ -57,24 +57,28 @@ class SpreadsheetTest extends TestCase
             $modified
         );
 
-        $this->assertSame(
+        $this->assertEquals(
             $rdfaData['dc:publisher']->first()->getObject(),
-            $spreadsheet->getProperties()->getCompany()
+            new StringLiteral($spreadsheet->getProperties()->getCompany())
         );
 
-        $this->assertSame(
+        $this->assertEquals(
             (string)$rdfaData['dc:title']->first(),
-            $spreadsheet->getProperties()->getTitle()
+            new StringLiteral($spreadsheet->getProperties()->getTitle())
         );
 
-        $this->assertSame(
+        $this->assertEquals(
             $rdfaData['dc:audience']->first()->getObject(),
-            $spreadsheet->getProperties()->getCustomPropertyValue('Audience')
+            new StringLiteral(
+                $spreadsheet->getProperties()->getCustomPropertyValue('Audience')
+            )
         );
 
-        $this->assertSame(
+        $this->assertEquals(
             $rdfaData['dc:identifier']->first()->getObject(),
-            $spreadsheet->getProperties()->getCustomPropertyValue('Identifier')
+            new StringLiteral(
+                $spreadsheet->getProperties()->getCustomPropertyValue('Identifier')
+            )
         );
 
         $this->assertEquals(
@@ -82,9 +86,11 @@ class SpreadsheetTest extends TestCase
             $spreadsheet->getProperties()->getCustomPropertyValue('Language')
         );
 
-        $this->assertSame(
+        $this->assertEquals(
             $rdfaData['owl:versionInfo']->first()->getObject(),
-            $spreadsheet->getProperties()->getCustomPropertyValue('Version')
+            new StringLiteral(
+                $spreadsheet->getProperties()->getCustomPropertyValue('Version')
+            )
         );
 
         $this->assertSame(0, count($spreadsheet->getAllSheets()));

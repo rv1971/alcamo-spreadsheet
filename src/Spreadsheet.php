@@ -8,7 +8,7 @@
 
 namespace alcamo\spreadsheet;
 
-use alcamo\rdfa\RdfaData;
+use alcamo\rdfa\{HavingRdfaDataInterface, RdfaData};
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet as PhpOfficeSpreadsheet;
 
@@ -17,7 +17,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet as PhpOfficeSpreadsheet;
  *
  * @date Last reviewed 2026-01-14
  */
-class Spreadsheet extends PhpOfficeSpreadsheet
+class Spreadsheet extends PhpOfficeSpreadsheet implements HavingRdfaDataInterface
 {
     public const WORKSHEET_CLASS = Worksheet::class;
 
