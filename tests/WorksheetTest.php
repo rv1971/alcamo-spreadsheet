@@ -168,9 +168,9 @@ class WorksheetTest extends TestCase
         $sheet0->setCoordinate('D2')->writeRow(
             [
                 'foo',
-                [ 'bar' ],
+                'bar' => [ 'bar' ],
                 [ 'baz', 'style' => [ 'font' => [ 'size' => 18 ] ] ],
-                [ 44, 'type' => DataType::TYPE_STRING ]
+                44 => [ 44, 'type' => DataType::TYPE_STRING ]
             ],
             [ 'font' => [ 'italic' => true ] ]
         );

@@ -198,7 +198,7 @@ class Worksheet extends PhpOfficeWorksheet
     /**
      * @brief Write a data to cells.
      *
-     * @param $rowData Numerically-indexed array of items, each of which is
+     * @param $rowData Array of items, each of which is
      * - either a non-array value
      * - or an array consisting of the value (with key 0) and optionally a
      * style with key `style` and/or a data type with key `type`.
@@ -209,6 +209,8 @@ class Worksheet extends PhpOfficeWorksheet
      */
     public function writeCellIterator(array $data, iterable $cells): self
     {
+        $data = array_values($data);
+
         $i = 0;
 
         foreach ($cells as $cell) {
@@ -236,7 +238,7 @@ class Worksheet extends PhpOfficeWorksheet
     /**
      * @brief Write a horizontal range of cells.
      *
-     * @param $rowData Numerically-indexed array of items, each of which is
+     * @param $rowData Array of items, each of which is
      * - either a non-array value
      * - or an array consisting of the value (with key 0) and optionally a
      * style with key `style` and/or a data type with key `type`.
@@ -288,7 +290,7 @@ class Worksheet extends PhpOfficeWorksheet
     /**
      * @brief Write a vertical range of cells.
      *
-     * @param $data Numerically-indexed array of items, each of which is
+     * @param $data Array of items, each of which is
      * - either a non-array value
      * - or an array consisting of the value (with key 0) and optionally a
      * style with key `style` and/or a data type with key `type`.
