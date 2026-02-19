@@ -8,7 +8,7 @@
 
 namespace alcamo\spreadsheet;
 
-use alcamo\rdfa\{HavingRdfaDataInterface, RdfaData};
+use alcamo\rdfa\{HavingRdfaDataInterface, RdfaData, StringLiteral};
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet as PhpOfficeSpreadsheet;
 
@@ -71,7 +71,7 @@ class Spreadsheet extends PhpOfficeSpreadsheet implements HavingRdfaDataInterfac
             if (isset($this->rdfaData_[$prop])) {
                 foreach ((array)$methods as $method) {
                     $this->getProperties()->$method(
-                        (string)$this->rdfaData_[$prop]->first()
+                        (string)$this->rdfaData_->getFirstStmt($prop)
                     );
                 }
             }
@@ -80,13 +80,14 @@ class Spreadsheet extends PhpOfficeSpreadsheet implements HavingRdfaDataInterfac
         foreach (static::PROP_TO_CUSTOM_PROP as $prop => $customProp) {
             if (isset($this->rdfaData_[$prop])) {
                 $dataType =
-                    is_string($this->rdfaData_[$prop]->first()->getObject())
+                    $this->rdfaData_->getFirstObject($prop)
+                    instanceof StringLiteral
                     ? DataType::TYPE_STRING
                     : null;
 
                 $this->getProperties()->setCustomProperty(
                     $customProp,
-                    (string)$this->rdfaData_[$prop]->first(),
+                    (string)$this->rdfaData_->getFirstStmt($prop),
                     $dataType
                 );
             }
