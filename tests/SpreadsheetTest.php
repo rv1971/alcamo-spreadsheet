@@ -2,7 +2,8 @@
 
 namespace alcamo\spreadsheet;
 
-use alcamo\rdfa\{DateTimeLiteral, RdfaData, StringLiteral};
+use alcamo\rdf_literal\{DateTimeLiteral, StringLiteral};
+use alcamo\rdfa\RdfaData;
 use PHPUnit\Framework\TestCase;
 
 class MySpreadsheet extends Spreadsheet

@@ -3,7 +3,7 @@
 namespace alcamo\spreadsheet;
 
 use alcamo\process\Process;
-use alcamo\rdfa\MediaType;
+use alcamo\rdf_literal\MediaType;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PHPUnit\Framework\TestCase;
 
