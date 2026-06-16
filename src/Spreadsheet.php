@@ -8,7 +8,12 @@
 
 namespace alcamo\spreadsheet;
 
-use alcamo\rdfa\{HavingRdfaDataInterface, RdfaData, StringLiteral};
+use alcamo\rdfa\{
+    HavingRdfaDataInterface,
+    ImmutableRdfaData,
+    RdfaData,
+    StringLiteral
+};
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\Spreadsheet as PhpOfficeSpreadsheet;
 
@@ -55,8 +60,12 @@ class Spreadsheet extends PhpOfficeSpreadsheet implements HavingRdfaDataInterfac
         parent::__construct();
 
         switch (true) {
-            case $rdfaData instanceof RdfaData:
+            case $rdfaData instanceof ImmutableRdfaData:
                 $this->rdfaData_ = $rdfaData;
+                break;
+
+            case $rdfaData instanceof RdfaData:
+                $this->rdfaData_ = $rdfaData->toImmutable();
                 break;
 
             case isset($rdfaData):
@@ -98,7 +107,7 @@ class Spreadsheet extends PhpOfficeSpreadsheet implements HavingRdfaDataInterfac
         $this->getDefaultStyle()->applyFromArray(static::DEFAULT_STYLE);
     }
 
-    public function getRdfaData(): RdfaData
+    public function getRdfaData(): ImmutableRdfaData
     {
         return $this->rdfaData_;
     }

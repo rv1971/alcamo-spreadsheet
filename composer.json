@@ -6,6 +6,7 @@
     "require": {
         "php": "7.3 - 8.0",
         "alcamo/http": "0.11 - 0.13",
+        "alcamo/rdfa": "^0.14",
         "phpoffice/phpspreadsheet": "^1.25"
     },
     "autoload": {

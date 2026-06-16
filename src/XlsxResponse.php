@@ -34,7 +34,7 @@ class XlsxResponse extends Response
         /* Needed to get content-length. */
         fseek($resource, 0, SEEK_END);
 
-        $rdfaData = $spreadsheet->getRdfaData();
+        $rdfaData = $spreadsheet->getRdfaData()->toMutable();
 
         $rdfaData = $rdfaData->add(
             RdfaData::newFromIterable(
